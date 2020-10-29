@@ -15,10 +15,13 @@ Vue.use(VueRouter)
 
 const routes = [
     { path: '/dashboard', component:  require('./components/dashboard.vue').default },
-    { path: '/profile', component: require('./components/profile.vue').default }
+    { path: '/profile', component: require('./components/profile.vue').default },
+    { path: '/users', component: require('./components/Users.vue').default },
+    { path: '*', component: require('./components/NotFound.vue') }
   ]
 
   const router = new VueRouter({
+      mode:'history',
     routes // short for `routes: routes`
   })
 
