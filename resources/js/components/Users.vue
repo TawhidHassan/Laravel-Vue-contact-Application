@@ -67,7 +67,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form >
+                <form @submit.prevent="createUser">
                 <div class="modal-body">
                      <div class="form-group">
                         <input v-model="form.name" type="text" name="name"
@@ -137,6 +137,11 @@
                     bio: '',
                     photo: ''
            })
+        }
+      },
+      methods:{
+        createUser(){
+            this.form.post('api/user');
         }
       },
       mounted(){
