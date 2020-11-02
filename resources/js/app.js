@@ -9,6 +9,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import Vue from 'vue'
+import moment from 'moment';
 import { Form, HasError, AlertError } from 'vform'
 
 window.Form=Form;
@@ -31,7 +32,13 @@ const routes = [
     routes // short for `routes: routes`
   })
 
+  Vue.filter('upText', function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1)
+});
 
+Vue.filter('myDate',function(created){
+    return moment(created).format('MMMM Do YYYY');
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
