@@ -1891,23 +1891,28 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
+      var _this2 = this;
+
       this.$Progress.start();
-      this.form.post('api/user');
-      $('#addNew').modal('hide');
-      toast.fire({
-        type: 'success',
-        title: 'User Created in successfully'
-      });
-      this.$Progress.finish();
+      this.form.post('api/user').then(function () {
+        Fire.$emit('AfterCreate');
+        $('#addNew').modal('hide');
+        toast.fire({
+          type: 'success',
+          title: 'User Created in successfully'
+        });
+
+        _this2.$Progress.finish();
+      })["catch"](function () {});
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.loadUser();
-    setInterval(function () {
-      return _this2.loadUser();
-    }, 3000);
+    Fire.$on('AfterCreate', function () {
+      _this3.loadUsers();
+    }); // setInterval(()=>this.loadUser(),3000);
   }
 });
 
@@ -81141,6 +81146,7 @@ var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
   timer: 3000
 });
 window.toast = toast;
+window.Fire = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 window.Form = vform__WEBPACK_IMPORTED_MODULE_2__["Form"];
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component(vform__WEBPACK_IMPORTED_MODULE_2__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_2__["HasError"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component(vform__WEBPACK_IMPORTED_MODULE_2__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_2__["AlertError"]);
