@@ -7,7 +7,7 @@
                 <h3 class="card-title">Users Table</h3>
 
                 <div class="card-tools">
-                    <button class="btn btn-success"  data-toggle="modal" data-target="#addNew">Add New <i class="fas fa-user-plus fa-fw"></i></button>
+                    <button class="btn btn-success"  @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -33,11 +33,11 @@
                     <td>{{user.created_at | myDate}}</td>
 
                     <td>
-                        <a href="#">
+                        <a href="#" @click="editModal(user)">
                             <i class="fa fa-edit blue"></i>
                         </a>
                         /
-                        <a href="#">
+                        <a href="#" @click="deleteUser(user.id)">
                             <i class="fa fa-trash red"></i>
                         </a>
 
@@ -128,6 +128,7 @@
     export default {
         data() {
         return{
+            editmode: false,
             users:{},
            form: new Form({
                id:'',
@@ -141,6 +142,17 @@
         }
       },
       methods:{
+           newModal(){
+                this.editmode = false;
+                this.form.reset();
+                $('#addNew').modal('show');
+            },
+             editModal(user){
+                this.editmode = true;
+                this.form.reset();
+                $('#addNew').modal('show');
+                this.form.fill(user);
+            },
           loadUser(){
              axios.get("api/user").then(({ data }) => (this.users = data));
           },
@@ -158,7 +170,32 @@
                 })
                 .catch(()=>{
                 })
-            }
+            },
+            deleteUser(id){
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        // Send request to the server
+                         if (result.value) {
+                                this.form.delete('api/user/'+id).then(()=>{
+                                        swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                        )
+                                   this.loadUser();
+                                }).catch(()=> {
+                                    swal("Failed!", "There was something wronge.", "warning");
+                                });
+                         }
+                    })
+            },
         },
       created(){
         this.loadUser();
