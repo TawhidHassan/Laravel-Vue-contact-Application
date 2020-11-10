@@ -67,7 +67,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form @submit.prevent="createUser">
+               <form @submit.prevent="editmode ? updateUser() : createUser()">
                 <div class="modal-body">
                      <div class="form-group">
                         <input v-model="form.name" type="text" name="name"
@@ -110,8 +110,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button  type="submit" class="btn btn-success">Update</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
+                    <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
                 </div>
 
                 </form>
@@ -156,6 +156,25 @@
           loadUser(){
              axios.get("api/user").then(({ data }) => (this.users = data));
           },
+          updateUser(){
+                this.$Progress.start();
+                // console.log('Editing data');
+                this.form.put('api/user/'+this.form.id)
+                .then(() => {
+                    // success
+                    $('#addNew').modal('hide');
+                     swal.fire(
+                        'Updated!',
+                        'Information has been updated.',
+                        'success'
+                        )
+                        this.$Progress.finish();
+                      this.loadUser();
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
+            },
          createUser(){
                 this.$Progress.start();
                 this.form.post('api/user')
