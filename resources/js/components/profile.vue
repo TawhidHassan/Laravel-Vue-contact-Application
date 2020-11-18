@@ -21,7 +21,7 @@
                     <h5 class="widget-user-desc">{{this.form.type}}</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img class="img-circle"  alt="User Avatar">
+                    <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -162,6 +162,10 @@
             console.log('Component mounted.')
         },
         methods:{
+             getProfilePhoto(){
+                let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+ this.form.photo ;
+                return photo;
+            },
            updateProfile(e){
                 let file = e.target.files[0];
                 let reader = new FileReader();
