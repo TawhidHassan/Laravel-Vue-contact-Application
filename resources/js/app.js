@@ -90,6 +90,10 @@ Vue.component(
 );
 
 
+Vue.component(
+  'not-found',
+  require('./components/NotFoundComponent.vue').default
+);
 
 
 
